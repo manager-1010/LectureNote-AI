@@ -1,0 +1,28 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Local output files
+output/
+temp/
+*.log
+
+# Transcription output
+*_transcript.txt
+
+# Environment / secrets
+.env
+.env.*
+*.key
+
+# IDE / system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
