@@ -32,7 +32,10 @@ def transcribe_file():
         return
 
     try:
+        transcribe_button.config(state="disabled")
+
         status_label.config(text="Loading AI model...")
+        progress_label.config(text="Step 1 of 3")
         root.update()
 
         model = WhisperModel(
@@ -42,6 +45,7 @@ def transcribe_file():
         )
 
         status_label.config(text="Transcribing...")
+        progress_label.config(text="Step 2 of 3")
         root.update()
 
         segments, info = model.transcribe(
@@ -56,6 +60,10 @@ def transcribe_file():
 
         transcript = "\n".join(transcript_lines)
 
+        status_label.config(text="Saving transcript...")
+        progress_label.config(text="Step 3 of 3")
+        root.update()
+
         base_name = os.path.splitext(selected_file)[0]
         output_file = base_name + "_transcript.txt"
 
@@ -63,6 +71,7 @@ def transcribe_file():
             f.write(transcript)
 
         status_label.config(text="Transcription completed!")
+        progress_label.config(text="Completed")
 
         messagebox.showinfo(
             "Completed",
@@ -71,16 +80,20 @@ def transcribe_file():
 
     except Exception as e:
         status_label.config(text="Something went wrong")
+        progress_label.config(text="Failed")
 
         messagebox.showerror(
             "Error",
             str(e)
         )
 
+    finally:
+        transcribe_button.config(state="normal")
+
 
 root = tk.Tk()
 root.title("LectureNote AI")
-root.geometry("650x380")
+root.geometry("650x420")
 
 title_label = tk.Label(
     root,
@@ -125,6 +138,12 @@ status_label = tk.Label(
     root,
     text="Waiting for file..."
 )
-status_label.pack(pady=10)
+status_label.pack(pady=8)
+
+progress_label = tk.Label(
+    root,
+    text=""
+)
+progress_label.pack(pady=5)
 
 root.mainloop()
