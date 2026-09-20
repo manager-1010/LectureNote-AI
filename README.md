@@ -1,5 +1,24 @@
 # LectureNote AI
 
+## Download for Windows
+
+The easiest way to use LectureNote AI on Windows is to download the standalone application.
+
+**[Download LectureNote AI for Windows](https://github.com/manager-1010/LectureNote-AI/releases/tag/v0.1.1)**
+
+Open the release page and download:
+
+`LectureNote.AI.exe`
+
+### Windows version
+
+- No Python installation required
+- No account required
+- No API key required
+- Runs transcription locally on your computer
+
+> This is currently an early pre-release version.
+
 LectureNote AI is an open-source desktop tool designed to help students turn lecture recordings into readable transcripts.
 
 The goal is to make lecture review faster and easier, especially for students who have long audio or video recordings and do not want to manually transcribe everything.
