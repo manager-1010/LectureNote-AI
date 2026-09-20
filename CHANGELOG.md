@@ -15,3 +15,19 @@ All notable changes to this project will be documented in this file.
 - Privacy-first local workflow
 - No account required
 - No API key required
+
+
+## [0.1.1] - Mixed-Language Transcription Update
+
+### Added
+
+- Added a Cantonese + English transcription mode
+- Improved support for mixed-language lecture recordings
+- Added guidance to preserve English technical terms, names, and abbreviations
+- Enabled VAD filtering to reduce transcription issues caused by silence
+
+### Tested
+
+- Confirmed local transcription works correctly
+- Confirmed MP3, WAV, M4A, and MP4 input support
+- Confirmed Cantonese + English mixed-language mode works in basic testing
