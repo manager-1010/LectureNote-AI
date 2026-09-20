@@ -1,6 +1,6 @@
 import os
 import tkinter as tk
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, ttk
 from faster_whisper import WhisperModel
 from tkinterdnd2 import TkinterDnD, DND_FILES
 
@@ -40,21 +40,10 @@ def select_file():
 
 
 def handle_drop(event):
-    dropped_data = event.data
+    dropped_files = root.tk.splitlist(event.data)
 
-    if not dropped_data:
-        return
-
-    if dropped_data.startswith("{"):
-        end = dropped_data.find("}")
-        if end != -1:
-            dropped_file = dropped_data[1:end]
-        else:
-            dropped_file = dropped_data.strip("{}")
-    else:
-        dropped_file = dropped_data.split()[0]
-
-    set_selected_file(dropped_file)
+    if dropped_files:
+        set_selected_file(dropped_files[0])
 
 
 def transcribe_file():
@@ -82,15 +71,32 @@ def transcribe_file():
         progress_label.config(text="Step 2 of 3")
         root.update()
 
+        selected_mode = language_mode.get()
+
+        transcription_options = {
+            "beam_size": 5,
+            "vad_filter": True
+        }
+
+        if selected_mode == "Cantonese + English":
+            transcription_options["initial_prompt"] = (
+                "This lecture contains both Cantonese and English. "
+                "Preserve English words, technical terms, names, "
+                "abbreviations, and Cantonese speech accurately."
+            )
+
         segments, info = model.transcribe(
             selected_file,
-            beam_size=5
+            **transcription_options
         )
 
         transcript_lines = []
 
         for segment in segments:
-            transcript_lines.append(segment.text.strip())
+            text = segment.text.strip()
+
+            if text:
+                transcript_lines.append(text)
 
         transcript = "\n".join(transcript_lines)
 
@@ -127,7 +133,7 @@ def transcribe_file():
 
 root = TkinterDnD.Tk()
 root.title("LectureNote AI")
-root.geometry("650x470")
+root.geometry("650x540")
 
 title_label = tk.Label(
     root,
@@ -170,6 +176,24 @@ selected_file_label = tk.Label(
     wraplength=550
 )
 selected_file_label.pack(pady=10)
+
+language_label = tk.Label(
+    root,
+    text="Transcription Mode"
+)
+language_label.pack(pady=(10, 3))
+
+language_mode = ttk.Combobox(
+    root,
+    state="readonly",
+    values=[
+        "Auto Detect",
+        "Cantonese + English"
+    ],
+    width=28
+)
+language_mode.current(0)
+language_mode.pack(pady=5)
 
 transcribe_button = tk.Button(
     root,
